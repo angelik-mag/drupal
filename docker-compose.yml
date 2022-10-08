@@ -1,0 +1,36 @@
+version: '1.0'
+
+
+
+services:
+  drupal:
+    image: drupal:8-apache
+    ports:
+      - 8080:80
+    depends_on:
+      - drupaldb
+    links:
+      - "drupaldb:database"
+    environment:
+      DBASE: drupaldb
+      USER: drupaluser	
+      PASS: drupalpassword 
+    volumes:
+      - /var/www/html/modules
+      - /var/www/html/profiles
+      - /var/www/html/themes 
+      - /var/www/html/sites
+    restart: always
+
+  drupaldb: 
+    image: postgres:14.5
+    environment:
+      POSTGRES_DB: drupaldb
+      POSTGRES_USER: drupaluser
+      POSTGRES_PASSWORD: drupalpassword
+    ports:
+      - 5432:5432
+    restart: always
+
+
+ 
